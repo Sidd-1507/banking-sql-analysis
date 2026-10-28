@@ -1,0 +1,21 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# Docker volumes
+docker/data/
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.bak
