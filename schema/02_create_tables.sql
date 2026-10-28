@@ -23,7 +23,7 @@ CREATE TABLE customers (
     email           VARCHAR(100)    NOT NULL UNIQUE COMMENT 'Primary email – used for login',
     phone           VARCHAR(15)                     COMMENT 'Mobile or landline with country code',
     date_of_birth   DATE                            COMMENT 'DOB for age verification',
-    gender          ENUM('Male','Female','Other')   COMMENT 'Self-declared gender',
+    gender          VARCHAR(10)                     COMMENT 'Self-declared gender',
     address         VARCHAR(255)                    COMMENT 'Street address line',
     city            VARCHAR(50)     NOT NULL        COMMENT 'City of residence',
     state           VARCHAR(50)                     COMMENT 'State / province',
@@ -33,6 +33,8 @@ CREATE TABLE customers (
     kyc_status      ENUM('Verified','Pending','Rejected')
                                     DEFAULT 'Pending'
                                                     COMMENT 'KYC verification state',
+    account_open_date DATE                          COMMENT 'Account open date',
+    branch_id       INT             DEFAULT NULL    COMMENT 'Primary branch',
     created_at      TIMESTAMP       DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP       DEFAULT CURRENT_TIMESTAMP
                                     ON UPDATE CURRENT_TIMESTAMP,
@@ -48,10 +50,14 @@ CREATE TABLE branches (
     branch_id       INT             PRIMARY KEY AUTO_INCREMENT,
     branch_name     VARCHAR(100)    NOT NULL        COMMENT 'Human-readable branch name',
     branch_code     VARCHAR(10)     NOT NULL UNIQUE COMMENT 'Internal short code',
+    ifsc_code       VARCHAR(11)     NOT NULL UNIQUE COMMENT 'Indian Financial System Code',
     city            VARCHAR(50)     NOT NULL        COMMENT 'City where branch operates',
     state           VARCHAR(50)                     COMMENT 'State / province',
-    ifsc_code       VARCHAR(11)     NOT NULL UNIQUE COMMENT 'Indian Financial System Code',
+    address         VARCHAR(255)                    COMMENT 'Street address of the branch',
+    phone           VARCHAR(15)                     COMMENT 'Contact telephone',
     manager_name    VARCHAR(100)                    COMMENT 'Current branch manager',
+    opened_date     DATE                            COMMENT 'Branch inception date',
+    is_active       BOOLEAN         DEFAULT TRUE    COMMENT 'Operating status',
     created_at      TIMESTAMP       DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB
   COMMENT='Bank branch directory';

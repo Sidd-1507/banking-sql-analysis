@@ -28,13 +28,10 @@ CREATE TABLE IF NOT EXISTS fraud_alerts (
     reviewed            BOOLEAN      DEFAULT FALSE,
     reviewed_by         VARCHAR(100),
     reviewed_at         TIMESTAMP,
-    resolution          VARCHAR(50)
+    resolution          VARCHAR(50),
+    INDEX idx_fraud_alerts_account (account_id, flagged_at),
+    INDEX idx_fraud_alerts_severity (alert_severity, reviewed)
 ) ENGINE=InnoDB;
-
-CREATE INDEX IF NOT EXISTS idx_fraud_alerts_account
-    ON fraud_alerts (account_id, flagged_at DESC);
-CREATE INDEX IF NOT EXISTS idx_fraud_alerts_severity
-    ON fraud_alerts (alert_severity, reviewed);
 
 
 -- =============================================================================
@@ -46,11 +43,9 @@ CREATE TABLE IF NOT EXISTS daily_balance_snapshot (
     snapshot_date  DATE           NOT NULL,
     balance        DECIMAL(15,2)  NOT NULL,
     captured_at    TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY uq_account_date (account_id, snapshot_date)
+    UNIQUE KEY uq_account_date (account_id, snapshot_date),
+    INDEX idx_balance_snapshot_date (snapshot_date, account_id)
 ) ENGINE=InnoDB;
-
-CREATE INDEX IF NOT EXISTS idx_balance_snapshot_date
-    ON daily_balance_snapshot (snapshot_date, account_id);
 
 
 -- =============================================================================
